@@ -18,6 +18,7 @@ import {
   IonSearchbar,
   IonChip,
   IonLabel,
+  IonProgressBar,
 } from '@ionic/angular/standalone';
 import { BookService } from '../../services/book.service';
 import { BookItem } from '../../models/book.model';
@@ -47,12 +48,16 @@ import { ThemeService } from '../../services/theme.service';
     IonSearchbar,
     IonChip,
     IonLabel,
+    IonProgressBar,
   ],
 })
 export class LibrosPage implements OnInit {
   private readonly bookService = inject(BookService);
   private readonly cdr = inject(ChangeDetectorRef);
   public readonly themeService = inject(ThemeService);
+
+  // Selector de modo de vista: Showcase Cards (por defecto) o Tabla Clásica
+  viewMode: 'cards' | 'table' = 'cards';
 
   // Estados de la vista
   books: BookItem[] = [];
@@ -64,6 +69,42 @@ export class LibrosPage implements OnInit {
   currentPage: number = 1;
   readonly pageSize: number = 8;
   totalItems: number = 0;
+
+  /**
+   * Métricas y KPIs del Dashboard Comercial
+   */
+  get totalStockValoradoVisible(): number {
+    return this.books.reduce((acc, book) => acc + this.calcularStockValorado(book), 0);
+  }
+
+  get totalUnidadesStockVisible(): number {
+    return this.books.reduce((acc, book) => acc + (book.stock ?? 0), 0);
+  }
+
+  get descuentoMedioVisible(): number {
+    if (this.books.length === 0) return 0;
+    const totalDesc = this.books.reduce((acc, book) => acc + (book.discountPercentage ?? 0), 0);
+    return Math.round(totalDesc / this.books.length);
+  }
+
+  get volumenesIndexados(): number {
+    return this.totalItems || this.books.length;
+  }
+
+  setViewMode(mode: 'cards' | 'table'): void {
+    this.viewMode = mode;
+  }
+
+  calcularPrecioConDescuento(book: BookItem): number {
+    const p = book.price ?? 0;
+    const d = book.discountPercentage ?? 0;
+    return p - (p * d / 100);
+  }
+
+  getStockProgress(stock?: number): number {
+    const val = (stock ?? 0) / 60;
+    return Math.min(1, Math.max(0.08, val));
+  }
 
   get totalPages(): number {
     return Math.max(1, Math.ceil(this.totalItems / this.pageSize));

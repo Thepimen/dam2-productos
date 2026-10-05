@@ -105,139 +105,323 @@
       </div>
     }
 
-    <!-- 3. ESTADO ÉXITO: TABLA INTERACTIVA Y RESPONSIVE -->
+    <!-- 3. ESTADO ÉXITO: DASHBOARD COMERCIAL Y SHOWCASE -->
     @else {
       @if (books.length > 0) {
+        
+        <!-- 1. Barra de KPIs / Métricas Rápidas (Dashboard Header) -->
+        <div class="kpi-dashboard-grid" aria-label="Métricas comerciales y financieras del catálogo">
+          
+          <div class="kpi-card kpi-valorado">
+            <div class="kpi-icon-box">
+              <ion-icon name="wallet-outline"></ion-icon>
+            </div>
+            <div class="kpi-content">
+              <span class="kpi-label">Total Stock Valorado (Pág.)</span>
+              <strong class="kpi-value">{{ totalStockValoradoVisible | currency:'EUR':'symbol':'1.2-2' }}</strong>
+              <span class="kpi-subtext">Inventario neto valorizado</span>
+            </div>
+          </div>
+
+          <div class="kpi-card kpi-stock">
+            <div class="kpi-icon-box">
+              <ion-icon name="cube-outline"></ion-icon>
+            </div>
+            <div class="kpi-content">
+              <span class="kpi-label">Unidades en Almacén</span>
+              <strong class="kpi-value">{{ totalUnidadesStockVisible }} <small>uds.</small></strong>
+              <span class="kpi-subtext">Volumen físico disponible</span>
+            </div>
+          </div>
+
+          <div class="kpi-card kpi-discount">
+            <div class="kpi-icon-box">
+              <ion-icon name="pricetags-outline"></ion-icon>
+            </div>
+            <div class="kpi-content">
+              <span class="kpi-label">Descuento Promedio</span>
+              <strong class="kpi-value">-{{ descuentoMedioVisible }}%</strong>
+              <span class="kpi-subtext">Beneficio comercial medio</span>
+            </div>
+          </div>
+
+          <div class="kpi-card kpi-items">
+            <div class="kpi-icon-box">
+              <ion-icon name="library-outline"></ion-icon>
+            </div>
+            <div class="kpi-content">
+              <span class="kpi-label">Volúmenes Indexados</span>
+              <strong class="kpi-value">{{ volumenesIndexados }}</strong>
+              <span class="kpi-subtext">Obras registradas en base de datos</span>
+            </div>
+          </div>
+
+        </div>
+
         <div class="table-card-wrapper">
           
+          <!-- Controles de la Vista y Resumen -->
           <div class="table-meta-header">
             <div class="meta-info">
-              <h2>Resultados de Búsqueda</h2>
+              <h2>Catálogo Comercial</h2>
               <span class="meta-badge">
                 Mostrando {{ startIndexDisplay }} - {{ endIndexDisplay }} de {{ totalItems }} volúmenes
               </span>
             </div>
+
+            <!-- Selector de Vista (Switch Cards / Tabla) -->
+            <div class="view-switch-group" role="group" aria-label="Selector de tipo de vista">
+              <button
+                type="button"
+                (click)="setViewMode('cards')"
+                [class.active-view]="viewMode === 'cards'"
+                class="view-switch-btn"
+                title="Vista Cuadrícula / Dashboard Cards">
+                <ion-icon name="grid-outline"></ion-icon>
+                <span>Cards</span>
+              </button>
+              <button
+                type="button"
+                (click)="setViewMode('table')"
+                [class.active-view]="viewMode === 'table'"
+                class="view-switch-btn"
+                title="Vista Tabla Clásica">
+                <ion-icon name="list-outline"></ion-icon>
+                <span>Tabla</span>
+              </button>
+            </div>
+
             <div class="meta-pagination-summary">
               <span class="page-indicator-pill">Página {{ currentPage }} de {{ totalPages }}</span>
             </div>
           </div>
 
-          <!-- Responsive Data Table -->
-          <div class="table-responsive-container">
-            <table class="books-table" aria-label="Catálogo de productos y stock valorado">
-              <thead>
-                <tr>
-                  <th scope="col" class="col-cover">Carátula</th>
-                  <th scope="col" class="col-title">Título y Detalles</th>
-                  <th scope="col" class="col-dimensions">Dimensiones</th>
-                  <th scope="col" class="col-stock">Stock (uds.)</th>
-                  <th scope="col" class="col-price">Precio Unit.</th>
-                  <th scope="col" class="col-discount">Descuento</th>
-                  <th scope="col" class="col-stock-valorado">Stock Valorado</th>
-                  <th scope="col" class="col-actions">Google Books</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (book of books; track book.id) {
-                  <tr class="book-row">
+          <!-- 2. VISTA CONDICIONAL: SHOWCASE DE CARDS O TABLA -->
+          @if (viewMode === 'cards') {
+            
+            <!-- Showcase Deck: Grid de Cards Interactivas -->
+            <div class="cards-showcase-grid">
+              @for (book of books; track book.id) {
+                <article class="book-showcase-card">
+                  
+                  <!-- Portada & Badges visuales -->
+                  <div class="card-cover-container">
+                    <img
+                      [src]="book.volumeInfo.imageLinks?.thumbnail || placeholderImage"
+                      (error)="handleImageError($event)"
+                      [alt]="'Portada de ' + book.volumeInfo.title"
+                      class="card-book-img"
+                      loading="lazy" />
                     
-                    <!-- Carátula -->
-                    <td class="cell-cover">
-                      <div class="thumbnail-wrapper">
-                        <img
-                          [src]="book.volumeInfo.imageLinks?.thumbnail || placeholderImage"
-                          (error)="handleImageError($event)"
-                          [alt]="'Portada de ' + book.volumeInfo.title"
-                          class="book-thumbnail"
-                          loading="lazy" />
-                      </div>
-                    </td>
+                    <div class="card-floating-badges">
+                      @if ((book.discountPercentage ?? 0) > 0) {
+                        <span class="badge-discount">-{{ book.discountPercentage }}% OFF</span>
+                      }
+                      <span class="badge-category">{{ book.volumeInfo.categories?.[0] || 'Ingeniería' }}</span>
+                    </div>
+                  </div>
 
-                    <!-- Título y Detalles -->
-                    <td class="cell-title">
-                      <div class="title-stack">
-                        <span class="book-title" [title]="book.volumeInfo.title">
-                          {{ book.volumeInfo.title }}
-                        </span>
-                        <span class="book-authors">
-                          {{ book.volumeInfo.authors?.join(', ') || 'Autor desconocido' }}
-                        </span>
-                        <div class="book-meta-sub">
-                          <span class="category-pill">{{ book.volumeInfo.categories?.[0] || 'Ingeniería Software' }}</span>
-                          <span class="publisher-year">{{ formatDate(book.volumeInfo.publishedDate) }}</span>
+                  <!-- Cuerpo de la Card -->
+                  <div class="card-body-content">
+                    <div class="card-header-meta">
+                      <span class="card-published-date">{{ formatDate(book.volumeInfo.publishedDate) }}</span>
+                      <span class="card-publisher">{{ book.volumeInfo.publisher || 'Editorial desc.' }}</span>
+                    </div>
+
+                    <h3 class="card-book-title" [title]="book.volumeInfo.title">
+                      {{ book.volumeInfo.title }}
+                    </h3>
+
+                    <p class="card-book-author">
+                      {{ book.volumeInfo.authors?.join(', ') || 'Autor desconocido' }}
+                    </p>
+
+                    <!-- Chip con Dimensiones Físicas -->
+                    <div class="card-dimensions-pill" title="Dimensiones físicas del ejemplar">
+                      <ion-icon name="resize-outline"></ion-icon>
+                      <span>{{ book.dimensions?.width ?? 15 }} × {{ book.dimensions?.height ?? 23 }} cm</span>
+                    </div>
+
+                    <!-- Indicador visual de stock -->
+                    <div class="card-stock-meter">
+                      <div class="stock-meter-labels">
+                        <span class="meter-title">Inventario:</span>
+                        <strong class="meter-units" [class.danger-stock]="(book.stock ?? 0) <= 15">
+                          {{ book.stock ?? 0 }} uds.
+                        </strong>
+                      </div>
+                      <ion-progress-bar
+                        [value]="getStockProgress(book.stock)"
+                        [color]="(book.stock ?? 0) <= 15 ? 'warning' : 'success'"
+                        class="stock-progress-bar">
+                      </ion-progress-bar>
+                    </div>
+
+                    <!-- Bloque financiero destacado -->
+                    <div class="card-finance-box">
+                      <div class="unit-pricing-col">
+                        <span class="pricing-label">Precio Unitario:</span>
+                        <div class="pricing-values">
+                          @if ((book.discountPercentage ?? 0) > 0) {
+                            <span class="original-strike-price">{{ book.price ?? 0 | currency:'EUR':'symbol':'1.2-2' }}</span>
+                            <strong class="final-unit-price">{{ calcularPrecioConDescuento(book) | currency:'EUR':'symbol':'1.2-2' }}</strong>
+                          } @else {
+                            <strong class="final-unit-price">{{ book.price ?? 0 | currency:'EUR':'symbol':'1.2-2' }}</strong>
+                          }
                         </div>
                       </div>
-                    </td>
 
-                    <!-- 1. Dimensiones físicas (ancho × alto en cm) -->
-                    <td class="cell-dimensions">
-                      <div class="dimensions-badge">
-                        <ion-icon name="resize-outline"></ion-icon>
-                        <span class="dimension-values">
-                          {{ book.dimensions?.width ?? 15 }} × {{ book.dimensions?.height ?? 23 }} cm
-                        </span>
-                      </div>
-                    </td>
-
-                    <!-- 2. Stock (unidades) -->
-                    <td class="cell-stock">
-                      <div class="stock-indicator">
-                        <span class="stock-pill" [class.low-stock]="(book.stock ?? 0) <= 15">
-                          {{ book.stock ?? 0 }} <small>uds.</small>
-                        </span>
-                      </div>
-                    </td>
-
-                    <!-- 3. Precio Unitario (€) -->
-                    <td class="cell-price">
-                      <span class="price-value">
-                        {{ book.price ?? 0 | currency:'EUR':'symbol':'1.2-2' }}
-                      </span>
-                    </td>
-
-                    <!-- 4. Descuento aplicable (%) -->
-                    <td class="cell-discount">
-                      <span class="discount-badge" [class.no-discount]="(book.discountPercentage ?? 0) === 0">
-                        @if ((book.discountPercentage ?? 0) > 0) {
-                          -{{ book.discountPercentage }}%
-                        } @else {
-                          0%
-                        }
-                      </span>
-                    </td>
-
-                    <!-- 5. Columna Destacada: Stock Valorado Total (€) -->
-                    <td class="cell-stock-valorado">
-                      <div class="valorado-box">
-                        <span class="valorado-label">Total Neto</span>
-                        <strong class="valorado-number">
+                      <div class="valorado-impact-col">
+                        <span class="valorado-impact-label">Stock Valorado</span>
+                        <strong class="valorado-impact-number">
                           {{ calcularStockValorado(book) | currency:'EUR':'symbol':'1.2-2' }}
                         </strong>
                       </div>
-                    </td>
+                    </div>
 
-                    <!-- Ficha Google Books -->
-                    <td class="cell-actions">
-                      @if (book.volumeInfo.infoLink) {
-                        <a
-                          [href]="book.volumeInfo.infoLink"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="view-link-btn"
-                          title="Abrir en Google Books">
-                          <span>Ficha</span>
-                          <ion-icon name="open-outline"></ion-icon>
-                        </a>
-                      } @else {
-                        <span class="no-link">N/A</span>
-                      }
-                    </td>
+                  </div>
 
+                  <!-- Pie de la Card con botón a Google Books -->
+                  <div class="card-footer-action">
+                    @if (book.volumeInfo.infoLink) {
+                      <a
+                        [href]="book.volumeInfo.infoLink"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="card-google-link"
+                        title="Ver detalles oficiales en Google Books">
+                        <span>Ver Ficha en Google Books</span>
+                        <ion-icon name="open-outline"></ion-icon>
+                      </a>
+                    } @else {
+                      <span class="card-no-link">Sin enlace externo</span>
+                    }
+                  </div>
+
+                </article>
+              }
+            </div>
+
+          } @else {
+
+            <!-- Vista Tabla Clásica -->
+            <div class="table-responsive-container">
+              <table class="books-table" aria-label="Catálogo de productos y stock valorado">
+                <thead>
+                  <tr>
+                    <th scope="col" class="col-cover">Carátula</th>
+                    <th scope="col" class="col-title">Título y Detalles</th>
+                    <th scope="col" class="col-dimensions">Dimensiones</th>
+                    <th scope="col" class="col-stock">Stock (uds.)</th>
+                    <th scope="col" class="col-price">Precio Unit.</th>
+                    <th scope="col" class="col-discount">Descuento</th>
+                    <th scope="col" class="col-stock-valorado">Stock Valorado</th>
+                    <th scope="col" class="col-actions">Google Books</th>
                   </tr>
-                }
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  @for (book of books; track book.id) {
+                    <tr class="book-row">
+                      
+                      <!-- Carátula -->
+                      <td class="cell-cover">
+                        <div class="thumbnail-wrapper">
+                          <img
+                            [src]="book.volumeInfo.imageLinks?.thumbnail || placeholderImage"
+                            (error)="handleImageError($event)"
+                            [alt]="'Portada de ' + book.volumeInfo.title"
+                            class="book-thumbnail"
+                            loading="lazy" />
+                        </div>
+                      </td>
+
+                      <!-- Título y Detalles -->
+                      <td class="cell-title">
+                        <div class="title-stack">
+                          <span class="book-title" [title]="book.volumeInfo.title">
+                            {{ book.volumeInfo.title }}
+                          </span>
+                          <span class="book-authors">
+                            {{ book.volumeInfo.authors?.join(', ') || 'Autor desconocido' }}
+                          </span>
+                          <div class="book-meta-sub">
+                            <span class="category-pill">{{ book.volumeInfo.categories?.[0] || 'Ingeniería Software' }}</span>
+                            <span class="publisher-year">{{ formatDate(book.volumeInfo.publishedDate) }}</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <!-- 1. Dimensiones físicas (ancho × alto en cm) -->
+                      <td class="cell-dimensions">
+                        <div class="dimensions-badge">
+                          <ion-icon name="resize-outline"></ion-icon>
+                          <span class="dimension-values">
+                            {{ book.dimensions?.width ?? 15 }} × {{ book.dimensions?.height ?? 23 }} cm
+                          </span>
+                        </div>
+                      </td>
+
+                      <!-- 2. Stock (unidades) -->
+                      <td class="cell-stock">
+                        <div class="stock-indicator">
+                          <span class="stock-pill" [class.low-stock]="(book.stock ?? 0) <= 15">
+                            {{ book.stock ?? 0 }} <small>uds.</small>
+                          </span>
+                        </div>
+                      </td>
+
+                      <!-- 3. Precio Unitario (€) -->
+                      <td class="cell-price">
+                        <span class="price-value">
+                          {{ book.price ?? 0 | currency:'EUR':'symbol':'1.2-2' }}
+                        </span>
+                      </td>
+
+                      <!-- 4. Descuento aplicable (%) -->
+                      <td class="cell-discount">
+                        <span class="discount-badge" [class.no-discount]="(book.discountPercentage ?? 0) === 0">
+                          @if ((book.discountPercentage ?? 0) > 0) {
+                            -{{ book.discountPercentage }}%
+                          } @else {
+                            0%
+                          }
+                        </span>
+                      </td>
+
+                      <!-- 5. Columna Destacada: Stock Valorado Total (€) -->
+                      <td class="cell-stock-valorado">
+                        <div class="valorado-box">
+                          <span class="valorado-label">Total Neto</span>
+                          <strong class="valorado-number">
+                            {{ calcularStockValorado(book) | currency:'EUR':'symbol':'1.2-2' }}
+                          </strong>
+                        </div>
+                      </td>
+
+                      <!-- Ficha Google Books -->
+                      <td class="cell-actions">
+                        @if (book.volumeInfo.infoLink) {
+                          <a
+                            [href]="book.volumeInfo.infoLink"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="view-link-btn"
+                            title="Abrir en Google Books">
+                            <span>Ficha</span>
+                            <ion-icon name="open-outline"></ion-icon>
+                          </a>
+                        } @else {
+                          <span class="no-link">N/A</span>
+                        }
+                      </td>
+
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+          }
 
           <!-- Barra de Paginación Accesible e Interactiva -->
           <div class="pagination-container" aria-label="Controles de paginación del catálogo">

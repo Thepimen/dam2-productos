@@ -28,6 +28,12 @@ import {
   resizeOutline,
   sunnyOutline,
   moonOutline,
+  gridOutline,
+  listOutline,
+  cubeOutline,
+  trendingUpOutline,
+  walletOutline,
+  pricetagsOutline,
 } from 'ionicons/icons';
 
 @Component({
@@ -65,6 +71,12 @@ export class AppComponent {
       resizeOutline,
       sunnyOutline,
       moonOutline,
+      gridOutline,
+      listOutline,
+      cubeOutline,
+      trendingUpOutline,
+      walletOutline,
+      pricetagsOutline,
     });
   }
 }
