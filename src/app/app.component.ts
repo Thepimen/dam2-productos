@@ -1,0 +1,66 @@
+import { Component } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import {
+  bookOutline,
+  star,
+  starOutline,
+  starHalf,
+  alertCircleOutline,
+  refreshOutline,
+  openOutline,
+  searchOutline,
+  arrowForwardOutline,
+  arrowBackOutline,
+  informationCircleOutline,
+  libraryOutline,
+  codeSlashOutline,
+  calendarOutline,
+  businessOutline,
+  pricetagOutline,
+  globeOutline,
+  hardwareChipOutline,
+  checkmarkCircleOutline,
+  layersOutline,
+  homeOutline,
+  logoGithub,
+  cashOutline,
+  resizeOutline,
+} from 'ionicons/icons';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  standalone: true,
+  imports: [IonApp, IonRouterOutlet],
+})
+export class AppComponent {
+  constructor() {
+    addIcons({
+      bookOutline,
+      star,
+      starOutline,
+      starHalf,
+      alertCircleOutline,
+      refreshOutline,
+      openOutline,
+      searchOutline,
+      arrowForwardOutline,
+      arrowBackOutline,
+      informationCircleOutline,
+      libraryOutline,
+      codeSlashOutline,
+      calendarOutline,
+      businessOutline,
+      pricetagOutline,
+      globeOutline,
+      hardwareChipOutline,
+      checkmarkCircleOutline,
+      layersOutline,
+      homeOutline,
+      logoGithub,
+      cashOutline,
+      resizeOutline,
+    });
+  }
+}
