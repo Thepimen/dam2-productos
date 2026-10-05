@@ -8,6 +8,9 @@
       </div>
     </ion-title>
     <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="themeService.toggleTheme()" [title]="themeService.isDarkMode() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'" class="theme-toggle-btn">
+        <ion-icon slot="icon-only" [name]="themeService.isDarkMode() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      </ion-button>
       <ion-button fill="clear" routerLink="/about" class="nav-shortcut-btn">
         <ion-icon slot="start" name="business-outline"></ion-icon>
         About

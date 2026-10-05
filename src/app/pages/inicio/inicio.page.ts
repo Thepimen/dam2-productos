@@ -18,6 +18,8 @@ import {
   IonLabel,
 } from '@ionic/angular/standalone';
 
+import { ThemeService } from '../../services/theme.service';
+
 interface TechFeature {
   title: string;
   badge: string;
@@ -51,6 +53,7 @@ interface TechFeature {
 })
 export class InicioPage {
   private readonly router = inject(Router);
+  public readonly themeService = inject(ThemeService);
 
   readonly techFeatures: TechFeature[] = [
     {

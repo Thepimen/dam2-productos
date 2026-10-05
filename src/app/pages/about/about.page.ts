@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ThemeService } from '../../services/theme.service';
 import {
   IonHeader,
   IonToolbar,
@@ -54,6 +55,7 @@ interface MetricItem {
   ],
 })
 export class AboutPage {
+  public readonly themeService = inject(ThemeService);
   readonly githubProfileUrl = 'https://github.com/thepimen';
 
   readonly competencies: CompetencyItem[] = [

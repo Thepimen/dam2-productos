@@ -46,6 +46,7 @@ html, body {
   background-color: #0f1015;
   color: #e8eaed;
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom scrollbars */
@@ -65,5 +66,241 @@ html, body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(66, 133, 244, 0.5);
+}
+
+/* Botón accesible de alternancia de tema */
+.theme-toggle-btn {
+  --color: #fbbc04;
+  font-size: 1.25rem;
+  transition: transform 0.25s ease;
+
+  &:hover {
+    transform: rotate(20deg) scale(1.1);
+  }
+}
+
+/* -------------------------------------------------------------
+ * MODO CLARO (Light Theme) Overrides & Paleta Visual
+ * ------------------------------------------------------------- */
+html.light,
+body.light {
+  background-color: #f6f8fa;
+  color: #1f2328;
+
+  .header-toolbar {
+    --background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    .brand-google,
+    .title-text,
+    .brand-title {
+      color: #1f2328 !important;
+    }
+
+    .brand-sub {
+      color: #57606a !important;
+    }
+
+    .nav-shortcut-btn {
+      --color: #1a73e8;
+
+      &.highlight-shortcut {
+        --color: #ffffff;
+        --background: #1a73e8;
+        border-color: #1a73e8;
+      }
+    }
+
+    .back-home-btn {
+      --color: #1a73e8;
+    }
+
+    .about-nav-btn {
+      --color: #57606a;
+    }
+
+    .refresh-btn {
+      --color: #1a73e8;
+    }
+  }
+
+  .inicio-content,
+  .libros-content,
+  .about-content {
+    --background: #f6f8fa;
+    color: #1f2328;
+  }
+
+  .hero-title,
+  .section-title,
+  .hero-headline {
+    color: #1f2328 !important;
+  }
+
+  .hero-subtitle,
+  .hero-lead,
+  .section-subtitle {
+    color: #57606a !important;
+  }
+
+  /* Tarjetas y componentes */
+  .table-card-wrapper,
+  .feature-card,
+  .competency-card,
+  .github-card,
+  .metric-card,
+  .banner-card,
+  .action-footer-card,
+  .spinner-card,
+  .empty-box {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+    color: #1f2328;
+  }
+
+  .custom-searchbar {
+    --background: #ffffff !important;
+    --color: #1f2328 !important;
+    --placeholder-color: #57606a !important;
+    --icon-color: #1a73e8 !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  /* Tabla de Productos */
+  .books-table {
+    thead tr th {
+      background: #f1f3f8 !important;
+      color: #1a73e8 !important;
+      border-bottom: 2px solid rgba(26, 115, 232, 0.3) !important;
+    }
+
+    tbody .book-row {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+
+      &:hover {
+        background-color: rgba(66, 133, 244, 0.05) !important;
+      }
+
+      .book-title {
+        color: #1f2328 !important;
+      }
+
+      .book-authors {
+        color: #57606a !important;
+      }
+
+      .price-value {
+        color: #1f2328 !important;
+      }
+    }
+  }
+
+  .table-meta-header,
+  .pagination-container,
+  .table-bottom-actions {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .table-meta-header .meta-info h2 {
+    color: #1f2328 !important;
+  }
+
+  .meta-pagination-summary .page-indicator-pill {
+    background: rgba(26, 115, 232, 0.1) !important;
+    border-color: rgba(26, 115, 232, 0.3) !important;
+    color: #1a73e8 !important;
+  }
+
+  .pagination-info strong {
+    color: #1f2328 !important;
+  }
+
+  .page-number-btn {
+    background: #f1f3f8 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #1f2328 !important;
+
+    &.active-page {
+      background: #1a73e8 !important;
+      border-color: #1a73e8 !important;
+      color: #ffffff !important;
+    }
+  }
+
+  .dimensions-badge {
+    background: #f1f3f8 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #1f2328 !important;
+
+    ion-icon {
+      color: #1a73e8 !important;
+    }
+  }
+
+  .valorado-box {
+    background: rgba(26, 115, 232, 0.08) !important;
+    border-color: rgba(26, 115, 232, 0.25) !important;
+
+    .valorado-number {
+      color: #1a73e8 !important;
+    }
+  }
+
+  .tag-chip,
+  .topic-chip,
+  .custom-chip {
+    --background: #f1f3f8 !important;
+    --color: #3c4043 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+
+    &.active-chip {
+      --background: rgba(26, 115, 232, 0.12) !important;
+      --color: #1a73e8 !important;
+      border-color: #1a73e8 !important;
+    }
+  }
+
+  .github-text-content {
+    .github-title {
+      color: #1f2328 !important;
+    }
+    .github-description {
+      color: #57606a !important;
+    }
+  }
+
+  .github-icon-box {
+    background: #f1f3f8 !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+
+    ion-icon {
+      color: #1f2328 !important;
+    }
+  }
+
+  .github-external-button {
+    background: #1f2328 !important;
+    color: #ffffff !important;
+  }
+
+  .cta-about-btn {
+    --color: #1f2328 !important;
+    --border-color: rgba(0, 0, 0, 0.2) !important;
+
+    &:hover {
+      --background: rgba(0, 0, 0, 0.05) !important;
+    }
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f3f8;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+  }
 }
 

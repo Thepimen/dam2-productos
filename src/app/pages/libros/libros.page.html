@@ -19,6 +19,9 @@
     </ion-title>
 
     <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="themeService.toggleTheme()" [title]="themeService.isDarkMode() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'" class="theme-toggle-btn">
+        <ion-icon slot="icon-only" [name]="themeService.isDarkMode() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      </ion-button>
       <ion-button routerLink="/about" fill="clear" title="Sobre la Consultora" class="about-nav-btn">
         <ion-icon slot="start" name="business-outline"></ion-icon>
         <span class="about-btn-label">About</span>
@@ -110,11 +113,12 @@
           <div class="table-meta-header">
             <div class="meta-info">
               <h2>Resultados de Búsqueda</h2>
-              <span class="meta-badge">{{ books.length }} volúmenes encontrados</span>
+              <span class="meta-badge">
+                Mostrando {{ startIndexDisplay }} - {{ endIndexDisplay }} de {{ totalItems }} volúmenes
+              </span>
             </div>
-            <div class="meta-hint">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              <span>Scroll horizontal disponible en pantallas reducidas</span>
+            <div class="meta-pagination-summary">
+              <span class="page-indicator-pill">Página {{ currentPage }} de {{ totalPages }}</span>
             </div>
           </div>
 
@@ -233,6 +237,60 @@
                 }
               </tbody>
             </table>
+          </div>
+
+          <!-- Barra de Paginación Accesible e Interactiva -->
+          <div class="pagination-container" aria-label="Controles de paginación del catálogo">
+            <div class="pagination-info">
+              <span class="info-range">
+                Mostrando <strong>{{ startIndexDisplay }} - {{ endIndexDisplay }}</strong> de <strong>{{ totalItems }}</strong> productos
+              </span>
+              <span class="info-pages">
+                (Página <strong>{{ currentPage }}</strong> de <strong>{{ totalPages }}</strong>)
+              </span>
+            </div>
+
+            <div class="pagination-controls">
+              <!-- Botón Anterior -->
+              <ion-button
+                (click)="prevPage()"
+                [disabled]="currentPage <= 1 || isLoading"
+                fill="outline"
+                shape="round"
+                class="page-nav-btn prev-btn"
+                title="Página anterior">
+                <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+                <span>Anterior</span>
+              </ion-button>
+
+              <!-- Selector numérico de páginas -->
+              <div class="page-numbers-group">
+                @for (p of visiblePages; track p) {
+                  <button
+                    type="button"
+                    (click)="goToPage(p)"
+                    [class.active-page]="p === currentPage"
+                    [disabled]="isLoading"
+                    class="page-number-btn"
+                    [attr.aria-label]="'Ir a la página ' + p"
+                    [attr.aria-current]="p === currentPage ? 'page' : null">
+                    {{ p }}
+                  </button>
+                }
+              </div>
+
+              <!-- Botón Siguiente -->
+              <ion-button
+                (click)="nextPage()"
+                [disabled]="currentPage >= totalPages || isLoading"
+                fill="outline"
+                shape="round"
+                class="page-nav-btn next-btn"
+                title="Página siguiente">
+                <span>Siguiente</span>
+                <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+              </ion-button>
+            </div>
           </div>
 
           <!-- Botones de navegación al final de la tabla -->

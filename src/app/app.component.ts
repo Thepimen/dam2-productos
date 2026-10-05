@@ -26,6 +26,8 @@ import {
   logoGithub,
   cashOutline,
   resizeOutline,
+  sunnyOutline,
+  moonOutline,
 } from 'ionicons/icons';
 
 @Component({
@@ -61,6 +63,8 @@ export class AppComponent {
       logoGithub,
       cashOutline,
       resizeOutline,
+      sunnyOutline,
+      moonOutline,
     });
   }
 }

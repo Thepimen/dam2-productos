@@ -21,6 +21,7 @@ import {
 } from '@ionic/angular/standalone';
 import { BookService } from '../../services/book.service';
 import { BookItem } from '../../models/book.model';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-libros',
@@ -51,13 +52,49 @@ import { BookItem } from '../../models/book.model';
 export class LibrosPage implements OnInit {
   private readonly bookService = inject(BookService);
   private readonly cdr = inject(ChangeDetectorRef);
+  public readonly themeService = inject(ThemeService);
 
   // Estados de la vista
   books: BookItem[] = [];
   isLoading: boolean = true;
   errorMessage: string | null = null;
-  totalItems: number = 0;
   currentQuery: string = 'software engineering';
+
+  // Estados y configuración de paginación requeridos por el cliente
+  currentPage: number = 1;
+  readonly pageSize: number = 8;
+  totalItems: number = 0;
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.totalItems / this.pageSize));
+  }
+
+  get startIndexDisplay(): number {
+    if (this.totalItems === 0) return 0;
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  get endIndexDisplay(): number {
+    return Math.min(this.currentPage * this.pageSize, this.totalItems);
+  }
+
+  get visiblePages(): number[] {
+    const pages: number[] = [];
+    const total = this.totalPages;
+    const current = this.currentPage;
+
+    let start = Math.max(1, current - 2);
+    let end = Math.min(total, start + 4);
+
+    if (end - start < 4) {
+      start = Math.max(1, end - 4);
+    }
+
+    for (let p = start; p <= end; p++) {
+      pages.push(p);
+    }
+    return pages;
+  }
 
   // Temas sugeridos para filtrado rápido
   readonly filterTopics: string[] = [
@@ -74,19 +111,25 @@ export class LibrosPage implements OnInit {
     'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="180" viewBox="0 0 128 180" fill="%231e2130"><rect width="100%" height="100%" fill="%231a1d29"/><path d="M40 50h48M40 70h48M40 90h30" stroke="%234285f4" stroke-width="4" stroke-linecap="round"/><circle cx="64" cy="130" r="14" fill="%2334a853" opacity="0.4"/><text x="50%" y="160" text-anchor="middle" fill="%239aa0a6" font-family="sans-serif" font-size="10">Sin portada</text></svg>';
 
   ngOnInit(): void {
-    this.cargarLibros(this.currentQuery);
+    this.cargarLibros(this.currentQuery, true);
   }
 
   /**
-   * Ejecuta la petición al servicio con manejo reactivo de estados
+   * Ejecuta la petición al servicio con manejo reactivo de estados y paginación
    */
-  cargarLibros(query: string = this.currentQuery): void {
+  cargarLibros(query: string = this.currentQuery, resetPage: boolean = false): void {
+    if (resetPage) {
+      this.currentPage = 1;
+    }
+
     this.isLoading = true;
     this.errorMessage = null;
     this.currentQuery = query;
     this.cdr.markForCheck();
 
-    this.bookService.getBooks(query).subscribe({
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+
+    this.bookService.getBooks(query, startIndex, this.pageSize).subscribe({
       next: (response) => {
         this.books = response.items || [];
         this.totalItems = response.totalItems || this.books.length;
@@ -102,30 +145,58 @@ export class LibrosPage implements OnInit {
   }
 
   /**
-   * Reintenta la carga tras un fallo
+   * Avanza a la siguiente página si está disponible
    */
-  reintentar(): void {
-    this.cargarLibros(this.currentQuery);
-  }
-
-  /**
-   * Búsqueda disparada desde el searchbar
-   */
-  onSearch(event: CustomEvent): void {
-    const value = (event.detail.value || '').trim();
-    if (value && value !== this.currentQuery) {
-      this.cargarLibros(value);
-    } else if (!value) {
-      this.cargarLibros('software engineering');
+  nextPage(): void {
+    if (this.currentPage < this.totalPages && !this.isLoading) {
+      this.goToPage(this.currentPage + 1);
     }
   }
 
   /**
-   * Selecciona una temática de los chips
+   * Retrocede a la página anterior si está disponible
+   */
+  prevPage(): void {
+    if (this.currentPage > 1 && !this.isLoading) {
+      this.goToPage(this.currentPage - 1);
+    }
+  }
+
+  /**
+   * Navega directamente a un número de página específico
+   */
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage && !this.isLoading) {
+      this.currentPage = page;
+      this.cargarLibros(this.currentQuery, false);
+    }
+  }
+
+  /**
+   * Reintenta la carga tras un fallo
+   */
+  reintentar(): void {
+    this.cargarLibros(this.currentQuery, false);
+  }
+
+  /**
+   * Búsqueda disparada desde el searchbar (reinicia la paginación a la página 1)
+   */
+  onSearch(event: CustomEvent): void {
+    const value = (event.detail.value || '').trim();
+    if (value && value !== this.currentQuery) {
+      this.cargarLibros(value, true);
+    } else if (!value) {
+      this.cargarLibros('software engineering', true);
+    }
+  }
+
+  /**
+   * Selecciona una temática de los chips (reinicia la paginación a la página 1)
    */
   seleccionarFiltro(tema: string): void {
     if (this.currentQuery !== tema) {
-      this.cargarLibros(tema);
+      this.cargarLibros(tema, true);
     }
   }
 

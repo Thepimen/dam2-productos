@@ -334,14 +334,19 @@ export class BookService {
   };
 
   /**
-   * Obtiene la colección de libros desde Google Books REST API.
+   * Obtiene la colección paginada de libros desde Google Books REST API.
    * Realiza la llamada HTTP real y, en caso de cuota excedida pública (HTTP 429),
-   * rescata de forma transparente la petición devolviendo datos de contingencia tipados.
+   * rescata de forma transparente la petición devolviendo la página de datos de contingencia tipados.
    */
-  getBooks(query: string = 'software engineering', maxResults: number = 25): Observable<GoogleBooksResponse> {
+  getBooks(
+    query: string = 'software engineering',
+    startIndex: number = 0,
+    maxResults: number = 10
+  ): Observable<GoogleBooksResponse> {
     const sanitizedQuery = query.trim() || 'software engineering';
     const params = {
       q: sanitizedQuery,
+      startIndex: startIndex.toString(),
       maxResults: maxResults.toString(),
       orderBy: 'relevance',
     };
@@ -357,7 +362,7 @@ export class BookService {
                 smallThumbnail: smallThumbnail ? smallThumbnail.replace(/^http:\/\//i, 'https://') : undefined,
               };
             }
-            return this.enrichBookItem(item, idx);
+            return this.enrichBookItem(item, startIndex + idx);
           });
           return response;
         }
@@ -367,7 +372,7 @@ export class BookService {
       }),
       catchError((error: HttpErrorResponse) => {
         console.warn('Google Books API retornó error (' + error.status + '). Activando contingencia con datos técnicos:', error.message);
-        return of(this.getCuratedResponse(sanitizedQuery));
+        return of(this.getCuratedResponse(sanitizedQuery, startIndex, maxResults));
       })
     );
   }
@@ -409,9 +414,9 @@ export class BookService {
   }
 
   /**
-   * Genera una respuesta GoogleBooksResponse tipada para la consulta especificada
+   * Genera una respuesta GoogleBooksResponse tipada y paginada para la consulta especificada
    */
-  getCuratedResponse(query: string): GoogleBooksResponse {
+  getCuratedResponse(query: string, startIndex: number = 0, maxResults: number = 10): GoogleBooksResponse {
     const normalized = query.toLowerCase();
     let matchedItems: BookItem[] = [];
 
@@ -422,29 +427,36 @@ export class BookService {
       }
     }
 
-    if (matchedItems.length === 0) {
-      // Si no hay match exacto, unificamos las mejores obras
-      matchedItems = [
-        ...this.curatedCatalog['software engineering'],
-        ...this.curatedCatalog['angular'],
-        ...this.curatedCatalog['typescript'],
-      ];
-    }
+    // Consolidamos un catálogo general para permitir paginación fluida
+    const allCatalogPool: BookItem[] = [];
+    Object.values(this.curatedCatalog).forEach((categoryBooks) => {
+      categoryBooks.forEach((b) => {
+        if (!allCatalogPool.some((item) => item.id === b.id)) {
+          allCatalogPool.push(b);
+        }
+      });
+    });
+
+    const sourceItems = matchedItems.length >= maxResults ? matchedItems : allCatalogPool;
+    const totalCount = sourceItems.length;
 
     // Aseguramos que todos los ítems de contingencia posean dimensiones y datos económicos completos
-    const enrichedItems = matchedItems.map((item, idx) => this.enrichBookItem(item, idx));
+    const allEnrichedItems = sourceItems.map((item, idx) => this.enrichBookItem(item, idx));
+
+    // Extraemos la rebanada de la página solicitada
+    const pagedItems = allEnrichedItems.slice(startIndex, startIndex + maxResults);
 
     return {
       kind: 'books#volumes',
-      totalItems: enrichedItems.length,
-      items: enrichedItems,
+      totalItems: totalCount,
+      items: pagedItems,
     };
   }
 
   /**
    * Método público de fallback para pruebas offline explícitas
    */
-  getFallbackBooks(): Observable<GoogleBooksResponse> {
-    return of(this.getCuratedResponse('software engineering'));
+  getFallbackBooks(startIndex: number = 0, maxResults: number = 10): Observable<GoogleBooksResponse> {
+    return of(this.getCuratedResponse('software engineering', startIndex, maxResults));
   }
 }

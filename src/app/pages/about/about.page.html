@@ -15,6 +15,9 @@
     </ion-title>
 
     <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="themeService.toggleTheme()" [title]="themeService.isDarkMode() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'" class="theme-toggle-btn">
+        <ion-icon slot="icon-only" [name]="themeService.isDarkMode() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      </ion-button>
       <ion-button routerLink="/productos" fill="clear" class="catalog-nav-btn">
         <ion-icon slot="start" name="library-outline"></ion-icon>
         <span class="btn-label-desktop">Catálogo</span>
