@@ -1,0 +1,463 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>enterprise-hub-pwa documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">enterprise-hub-pwa documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+    <button type="button"
+        class="search-input-clear"
+        aria-label="Clear search"
+        data-search-input-clear>&times;</button>
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content readme">
+                   <div class="content-data">
+
+
+<h1>EnterpriseHub PWA 🚀</h1>
+<blockquote>
+<p><strong>Sistema de Gestión Multiplataforma B2B</strong><br>Monitorización de Infraestructura y Tickets Técnicos en Tiempo Real</p>
+</blockquote>
+<p><a href="https://angular.io"><img src="https://img.shields.io/badge/Angular-22.x-red?logo=angular" alt="Angular" class="img-responsive"></a>
+<a href="https://ionicframework.com"><img src="https://img.shields.io/badge/Ionic-9.x-blue?logo=ionic" alt="Ionic" class="img-responsive"></a>
+<a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-6.x-blue?logo=typescript" alt="TypeScript" class="img-responsive"></a>
+<a href="https://www.w3.org/WAI/WCAG21/quickref/"><img src="https://img.shields.io/badge/WCAG-2.1%20AA-green" alt="WCAG" class="img-responsive"></a>
+<a href="./LICENSE"><img src="https://img.shields.io/badge/License-Academic-orange" alt="License" class="img-responsive"></a></p>
+<hr>
+<h2>📋 Información Académica</h2>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Campo</th><th>Detalle</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Alumno</strong></td><td>Luis López</td></tr>
+<tr><td><strong>Módulo</strong></td><td>Desarrollo de Interfaces (Código 0488)</td></tr>
+<tr><td><strong>Grado</strong></td><td>Técnico Superior en DAM (Grado Superior)</td></tr>
+<tr><td><strong>Centro</strong></td><td>Universidad Nebrija</td></tr>
+<tr><td><strong>Curso</strong></td><td>2025-2026</td></tr>
+</tbody>
+</table>
+<hr>
+<h2>🔑 Credenciales de Acceso (Demo)</h2>
+<blockquote>
+<p>⚠️ <strong>IMPORTANTE</strong>: Usa estos accesos rápidos en la pantalla de Login para demostración</p>
+</blockquote>
+<h3>👑 Administrador (Acceso Total)</h3>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Campo</th><th>Valor</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Email</strong></td><td><code>admin@enterprise.io</code></td></tr>
+<tr><td><strong>Contraseña</strong></td><td><code>Admin123!</code></td></tr>
+<tr><td><strong>Rol</strong></td><td><code>ADMIN</code></td></tr>
+<tr><td><strong>Acceso</strong></td><td>Dashboard + Tickets + Ayuda</td></tr>
+</tbody>
+</table>
+<h3>👤 Usuario Operaciones (Acceso Restringido)</h3>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Campo</th><th>Valor</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Email</strong></td><td><code>user@enterprise.io</code></td></tr>
+<tr><td><strong>Contraseña</strong></td><td><code>User123!</code></td></tr>
+<tr><td><strong>Rol</strong></td><td><code>USER</code></td></tr>
+<tr><td><strong>Acceso</strong></td><td>Tickets + Ayuda (Dashboard bloqueado por RoleGuard)</td></tr>
+</tbody>
+</table>
+<hr>
+<h2>🛠️ Stack Tecnológico</h2>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Tecnología</th><th>Versión</th><th>Uso</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Ionic Framework</strong></td><td>9.x</td><td>UI Components, PWA</td></tr>
+<tr><td><strong>Angular</strong></td><td>22.x</td><td>Framework SPA, Standalone Components</td></tr>
+<tr><td><strong>TypeScript</strong></td><td>6.x</td><td>Tipado estático estricto</td></tr>
+<tr><td><strong>RxJS</strong></td><td>7.8.x</td><td>BehaviorSubject, forkJoin, debounceTime</td></tr>
+<tr><td><strong>Chart.js</strong></td><td>4.x</td><td>Gráficos de barras y Doughnut</td></tr>
+<tr><td><strong>jsPDF + autotable</strong></td><td>2.5.x / 3.8.x</td><td>Exportación PDF profesional</td></tr>
+<tr><td><strong>@compodoc/compodoc</strong></td><td>1.1.x</td><td>Documentación técnica</td></tr>
+<tr><td><strong>Vercel</strong></td><td>—</td><td>Despliegue y hosting</td></tr>
+</tbody>
+</table>
+<hr>
+<h2>📁 Arquitectura del Proyecto</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">src/app/
+├── core/
+│   ├── models/
+│   │   ├── auth.model.ts          # User, UserRole, AuthState
+│   │   ├── ticket.model.ts        # Ticket, CreateTicketPayload, TableColumn
+│   │   └── metric.model.ts        # ServerMetric, SummaryMetrics, LiveMetrics
+│   ├── services/
+│   │   ├── auth.service.ts        # BehaviorSubject&lt;AuthState&gt;, login, logout
+│   │   ├── sql-mock.service.ts    # API REST simulada (300ms delay)
+│   │   ├── nosql-mock.service.ts  # Métricas en tiempo real (BehaviorSubject + interval)
+│   │   ├── export.service.ts      # CSV (Blob nativo) + PDF (jspdf-autotable)
+│   │   └── notification.service.ts # Toasts accesibles (Ionic)
+│   └── guards/
+│       ├── auth.guard.ts           # Rutas autenticadas (functional guard)
+│       └── role.guard.ts           # Solo ADMIN (functional guard)
+├── shared/
+│   └── components/
+│       ├── data-table/             # Tabla reutilizable (OnPush, filtro, paginación)
+│       └── metric-card/            # Widget KPI (OnPush, tendencias, ARIA)
+├── pages/
+│   ├── login/                      # Formulario reactivo + quick demo buttons
+│   ├── register/                   # Validador asíncrono uniqueEmailValidator
+│   ├── dashboard/                  # forkJoin + Chart.js + exportar PDF/CSV
+│   ├── tickets/                    # DataTable + modal crear ticket
+│   └── help/                       # Manual embebido + arquitectura
+├── app.component.ts                # Root component (ion-app + router-outlet)
+├── shell.component.ts              # Layout con ion-split-pane + ion-menu
+├── app.routes.ts                   # Lazy Loading + authGuard + roleGuard
+├── app.config.ts                   # Providers Angular/Ionic standalone
+└── theme/
+    └── variables.scss              # Design tokens WCAG AA/AAA verificados</code></pre></div><hr>
+<h2>🚀 Instalación y Ejecución Local</h2>
+<h3>Prerrequisitos</h3>
+<ul>
+<li><strong>Node.js</strong> ≥ 18.x</li>
+<li><strong>npm</strong> ≥ 9.x</li>
+<li><strong>Angular CLI</strong> ≥ 17.x (opcional)</li>
+</ul>
+<h3>Pasos</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># 1. Clonar el repositorio
+git clone &lt;url-repositorio&gt;
+cd ionicAngular
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Servidor de desarrollo
+npm start
+# → Abre automáticamente en http://localhost:4200
+
+# 4. Build de producción
+npm run build:prod
+# → Genera carpeta dist/ionic-angular/browser/</code></pre></div><hr>
+<h2>📖 Documentación con Compodoc</h2>
+<p>Compodoc genera documentación técnica automática del código TypeScript.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Generar y servir documentación (modo servidor)
+npm run compodoc
+# → Abre en http://localhost:8080
+
+# Solo generar (sin servidor)
+npm run compodoc:build
+# → Genera en docs/compodoc/</code></pre></div><p><strong>¿Qué documenta Compodoc?</strong></p>
+<ul>
+<li>✅ Todos los componentes con sus <code>@Input</code> y <code>@Output</code></li>
+<li>✅ Todos los servicios con sus métodos públicos</li>
+<li>✅ Interfaces y modelos TypeScript</li>
+<li>✅ Guards y pipes</li>
+<li>✅ Cobertura de documentación JSDoc</li>
+</ul>
+<hr>
+<h2>☁️ Despliegue en Vercel</h2>
+<h3>Opción 1: Vercel CLI (Recomendado)</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># 1. Instalar Vercel CLI globalmente
+npm install -g vercel
+
+# 2. Autenticar con Vercel
+vercel login
+
+# 3. Build de producción
+npm run build:prod
+
+# 4. Desplegar (primera vez - configura proyecto)
+vercel --prod
+
+# 5. Despliegues posteriores
+vercel --prod</code></pre></div><h3>Opción 2: Conectar con GitHub</h3>
+<ol>
+<li>Push al repositorio GitHub</li>
+<li>Ir a <a href="https://vercel.com">vercel.com</a> → New Project</li>
+<li>Importar el repositorio</li>
+<li>Configurar:<ul>
+<li><strong>Build Command</strong>: <code>npm run build:prod</code></li>
+<li><strong>Output Directory</strong>: <code>dist/ionic-angular/browser</code></li>
+</ul>
+</li>
+<li>Deploy</li>
+</ol>
+<blockquote>
+<p>El archivo <code>vercel.json</code> ya está configurado para evitar errores 404 al recargar en rutas SPA.</p>
+</blockquote>
+<hr>
+<h2>🌿 Git Flow Recomendado</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">main                    # Rama de producción (Vercel auto-deploy)
+└── develop             # Integración de features
+    ├── feature/auth            # Autenticación y guards
+    ├── feature/dashboard       # Dashboard y gráficos
+    ├── feature/tickets         # Gestión de tickets
+    ├── feature/data-table      # Componente reutilizable
+    ├── feature/accessibility   # Mejoras WCAG
+    └── hotfix/                 # Correcciones urgentes sobre main</code></pre></div><h3>Convención de commits</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">feat(dashboard): add forkJoin parallel data loading
+fix(auth): restore session from localStorage on reload
+style(theme): update WCAG AA contrast ratios
+docs(readme): add deployment guide
+test(data-table): add unit tests for filter logic</code></pre></div><hr>
+<h2>♿ Accesibilidad (WCAG 2.1 AA/AAA)</h2>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Criterio</th><th>Implementación</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>1.4.3 Contraste</strong></td><td>Ratio mínimo 4.5:1 en texto. Verificado con WebAIM.</td></tr>
+<tr><td><strong>1.4.4 Redimensionar texto</strong></td><td>Diseño responsive sin scroll horizontal hasta 320px.</td></tr>
+<tr><td><strong>2.1.1 Teclado</strong></td><td>Navegación Tab/Enter/Space en todos los interactivos.</td></tr>
+<tr><td><strong>2.4.3 Orden foco</strong></td><td>Orden lógico de tabulación en todos los formularios.</td></tr>
+<tr><td><strong>2.4.7 Foco visible</strong></td><td>:focus-visible con outline 3px en todos los elementos.</td></tr>
+<tr><td><strong>3.1.1 Idioma</strong></td><td><code>lang=&quot;es&quot;</code> en <code>&lt;html&gt;</code>.</td></tr>
+<tr><td><strong>3.3.1 Error identificado</strong></td><td><code>role=&quot;alert&quot;</code> + <code>aria-live=&quot;assertive&quot;</code> en errores.</td></tr>
+<tr><td><strong>4.1.2 Nombre/Función</strong></td><td><code>aria-label</code>, <code>aria-describedby</code>, <code>aria-current</code> en todos los elementos interactivos.</td></tr>
+<tr><td><strong>Tablas</strong></td><td><code>role=&quot;grid&quot;</code>, <code>role=&quot;columnheader&quot;</code>, <code>&lt;caption&gt;</code> en DataTable.</td></tr>
+<tr><td><strong>Movimiento</strong></td><td><code>prefers-reduced-motion</code> respetado.</td></tr>
+</tbody>
+</table>
+<hr>
+<h2>🔄 Patrones RxJS Implementados</h2>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Patrón</th><th>Servicio/Componente</th><th>Descripción</th></tr>
+</thead>
+<tbody>
+<tr><td><code>BehaviorSubject</code></td><td><code>AuthService</code></td><td>Estado global de autenticación</td></tr>
+<tr><td><code>forkJoin</code></td><td><code>DashboardPage</code></td><td>Carga paralela SQL + NoSQL</td></tr>
+<tr><td><code>debounceTime(300)</code></td><td><code>DataTableComponent</code></td><td>Búsqueda reactiva sin bloqueo</td></tr>
+<tr><td><code>debounceTime(300)</code></td><td><code>RegisterPage</code></td><td>Validador asíncrono email</td></tr>
+<tr><td><code>switchMap</code></td><td><code>RegisterPage</code></td><td>Cancelación de peticiones email</td></tr>
+<tr><td><code>distinctUntilChanged</code></td><td><code>DataTableComponent</code></td><td>Evita búsquedas duplicadas</td></tr>
+<tr><td><code>takeUntil</code></td><td>Todas las páginas</td><td>Gestión de suscripciones</td></tr>
+<tr><td><code>interval</code></td><td><code>NoSqlMockService</code></td><td>Actualización periódica 5s</td></tr>
+<tr><td><code>shareReplay(1)</code></td><td><code>NoSqlMockService</code></td><td>Caché del último valor</td></tr>
+</tbody>
+</table>
+<hr>
+<h2>📊 Estructura de Datos Mock</h2>
+<h3>Usuarios del Sistema</h3>
+<ul>
+<li><code>admin@enterprise.io</code> → Rol ADMIN</li>
+<li><code>user@enterprise.io</code> → Rol USER</li>
+</ul>
+<h3>Tickets (10 preconfigurados)</h3>
+<ul>
+<li>Estados: OPEN, IN_PROGRESS, RESOLVED, CLOSED</li>
+<li>Prioridades: LOW, MEDIUM, HIGH, CRITICAL</li>
+<li>Categorías: HARDWARE, SOFTWARE, NETWORK, SECURITY, OTHER</li>
+</ul>
+<h3>Servidores Monitorizados (12)</h3>
+<ul>
+<li>WEB-SRV-01/02, DB-PRIMARY/REPLICA, APP-SRV-01/02</li>
+<li>CACHE-01, BACKUP-SRV, PROXY-01, MONITOR-SRV, MAIL-SRV, VPN-GW</li>
+</ul>
+<hr>
+<h2>📄 Licencia</h2>
+<p>Proyecto académico para evaluación del módulo <strong>Desarrollo de Interfaces (0488)</strong><br><strong>Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)</strong><br>Universidad Nebrija — Curso 2025-2026</p>
+<hr>
+<p><em>Desarrollado con ❤️ y TypeScript estricto por Luis López</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'readme';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var updateDarkModeSwitchOffset = function () {
+                    var content = document.querySelector('.content');
+                    var scrollbarWidth = 0;
+
+                    if (content) {
+                         scrollbarWidth = Math.max(0, content.offsetWidth - content.clientWidth);
+                    }
+
+                    document.documentElement.style.setProperty(
+                         '--content-scrollbar-width',
+                         scrollbarWidth + 'px'
+                    );
+               };
+
+               updateDarkModeSwitchOffset();
+               requestAnimationFrame(updateDarkModeSwitchOffset);
+               window.addEventListener('resize', updateDarkModeSwitchOffset);
+
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

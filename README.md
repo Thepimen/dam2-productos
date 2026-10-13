@@ -1,109 +1,269 @@
-# Google Books Explorer · Ionic + Angular Standalone (DAM2)
+# EnterpriseHub PWA 🚀
 
-Aplicación Single Page Application (SPA) desarrollada con **Angular 22 Standalone** e **Ionic 9 Framework**, basada en la práctica de DAM2 de **Desarrollo de Interfaces**. La aplicación ha sido mutada desde la API original de productos para consumir directamente la **Google Books REST API**.
+> **Sistema de Gestión Multiplataforma B2B**  
+> Monitorización de Infraestructura y Tickets Técnicos en Tiempo Real
 
----
-
-## 🚀 Características Principales
-
-1. **Arquitectura 100% Standalone**:
-   - Sin `app.module.ts`. Toda la aplicación se inicializa mediante `bootstrapApplication` y `app.config.ts`.
-   - Inyección de dependencias moderna mediante la función `inject()` de Angular tanto en servicios (`BookService`) como en componentes (`InicioPage`, `LibrosPage`).
-   - Uso exclusivo del **nuevo control flow nativo de Angular** (`@if`, `@else if`, `@else`, `@for ... track`). No se utilizan directivas legadas (`*ngIf`, `*ngFor`).
-   - Importaciones granulares de componentes Ionic desde `@ionic/angular/standalone`.
-
-2. **Integración con Google Books REST API y Métricas de Negocio**:
-   - Endpoint: `https://www.googleapis.com/books/v1/volumes` con soporte de búsqueda y paginación (`startIndex`, `maxResults`).
-   - Modelo de datos fuertemente tipado en `src/app/models/book.model.ts` (`GoogleBooksResponse`, `BookItem`, `BookDimensions`).
-   - Dimensiones físicas añadidas al catálogo (`width` y `height` en cm).
-   - Métricas comerciales integradas: `stock` (unidades), `price` (PVP en €), `discountPercentage` (% de descuento) y **Stock Valorado Total**:
-     $$\text{Stock Valorado} = (\text{unidades} \times \text{precio}) - \left(\text{unidades} \times \text{precio} \times \frac{\text{descuento}}{100}\right)$$
-   - Manejo defensivo de errores HTTP y sistema de fallback offline integrado en caso de cuota excedida (HTTP 429 Too Many Requests).
-
-3. **Vistas & Navegación SPA**:
-   - `/` $\rightarrow$ Redirige a `/inicio`.
-   - `/inicio` $\rightarrow$ Página de bienvenida con Hero UI moderno, dos botones principales hacia `/productos` y `/about`, badges de arquitectura y accesos directos.
-   - `/productos` (y alias `/libros`) $\rightarrow$ Catálogo completo con buscador, chips temáticos, tabla de productos, métricas de stock valorado, paginación completa y botones visibles de retorno a Inicio.
-   - `/about` $\rightarrow$ Página corporativa de la consultora de desarrollo software DAM2 con reseña técnica, métricas, competencias y tarjeta oficial hacia el perfil de GitHub ([@thepimen](https://github.com/thepimen)).
-   - `**` $\rightarrow$ Redirige a `/inicio`.
-
-4. **Paginación Dinámica e Interactiva**:
-   - Paginación soportada de extremo a extremo (servicio `BookService`, controlador `LibrosPage` y vista HTML/SCSS).
-   - Rango visible: "Mostrando X - Y de Z productos" con cálculo dinámico de `totalPages`.
-   - Botones "Anterior" y "Siguiente" con iconos y selector numérico de páginas con realce visual.
-
-5. **Selector Modo Oscuro / Modo Claro (Dark/Light Theme Toggle)**:
-   - Servicio reactivo `ThemeService` con Angular Signals y persistencia en `localStorage`.
-   - Detección automática de preferencia del sistema (`prefers-color-scheme`).
-   - Botón toggle accesible en la barra superior de todas las vistas con iconos sol/luna (`sunny-outline` / `moon-outline`).
-   - Transiciones suaves y alto contraste en tabla, tarjetas y componentes.
-
-6. **Soporte para Despliegue en Vercel**:
-   - Archivo `vercel.json` en la raíz con reglas de reescritura hacia `/index.html` para evitar errores 404 al recargar rutas directas en producción.
+[![Angular](https://img.shields.io/badge/Angular-22.x-red?logo=angular)](https://angular.io)
+[![Ionic](https://img.shields.io/badge/Ionic-9.x-blue?logo=ionic)](https://ionicframework.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.x-blue?logo=typescript)](https://www.typescriptlang.org)
+[![WCAG](https://img.shields.io/badge/WCAG-2.1%20AA-green)](https://www.w3.org/WAI/WCAG21/quickref/)
+[![License](https://img.shields.io/badge/License-Academic-orange)](./LICENSE)
 
 ---
 
-## 🛠️ Estructura del Proyecto
+## 📋 Información Académica
 
-```text
-├── vercel.json                 # Configuración de routing SPA para Vercel
-├── angular.json                # Configuración de Angular CLI y budgets
-├── package.json                # Dependencias (Angular 22, Ionic 9, Capacitor 8)
-├── scripts/
-│   └── setup-ionic-exports.js  # Script de compatibilidad para standalone exports
-└── src/
-    ├── index.html              # Tipografía Google Fonts (Plus Jakarta Sans & Inter)
-    ├── main.ts                 # Bootstrap de la aplicación con appConfig y zone.js
-    ├── global.scss             # Estilos globales, paleta oscura y scrollbars
-    └── app/
-        ├── app.config.ts       # provideHttpClient(), provideRouter(), provideIonicAngular()
-        ├── app.routes.ts       # Rutas SPA (/inicio, /productos, /libros, /about, **)
-        ├── app.component.ts    # Componente raíz con registro de ionicons
-        ├── docs/
-        │   └── technical-notes.md # Documento técnico de arquitectura y troubleshooting
-        ├── models/
-        │   └── book.model.ts   # Interfaces TypeScript para Google Books API y negocio
-        ├── services/
-        │   └── book.service.ts # Servicio singleton reactivo con paginación y contingencia
-        └── pages/
-            ├── inicio/         # Vista Hero UI (/inicio) con accesos a productos y about
-            ├── libros/         # Vista Catálogo, tabla valorada y paginación (/productos)
-            └── about/          # Vista Corporativa DAM2 y enlace a GitHub (/about)
+| Campo | Detalle |
+|-------|---------|
+| **Alumno** | Luis López |
+| **Módulo** | Desarrollo de Interfaces (Código 0488) |
+| **Grado** | Técnico Superior en DAM (Grado Superior) |
+| **Centro** | Universidad Nebrija |
+| **Curso** | 2025-2026 |
+
+---
+
+## 🔑 Credenciales de Acceso (Demo)
+
+> ⚠️ **IMPORTANTE**: Usa estos accesos rápidos en la pantalla de Login para demostración
+
+### 👑 Administrador (Acceso Total)
+| Campo | Valor |
+|-------|-------|
+| **Email** | `admin@enterprise.io` |
+| **Contraseña** | `Admin123!` |
+| **Rol** | `ADMIN` |
+| **Acceso** | Dashboard + Tickets + Ayuda |
+
+### 👤 Usuario Operaciones (Acceso Restringido)  
+| Campo | Valor |
+|-------|-------|
+| **Email** | `user@enterprise.io` |
+| **Contraseña** | `User123!` |
+| **Rol** | `USER` |
+| **Acceso** | Tickets + Ayuda (Dashboard bloqueado por RoleGuard) |
+
+---
+
+## 🛠️ Stack Tecnológico
+
+| Tecnología | Versión | Uso |
+|-----------|---------|-----|
+| **Ionic Framework** | 9.x | UI Components, PWA |
+| **Angular** | 22.x | Framework SPA, Standalone Components |
+| **TypeScript** | 6.x | Tipado estático estricto |
+| **RxJS** | 7.8.x | BehaviorSubject, forkJoin, debounceTime |
+| **Chart.js** | 4.x | Gráficos de barras y Doughnut |
+| **jsPDF + autotable** | 2.5.x / 3.8.x | Exportación PDF profesional |
+| **@compodoc/compodoc** | 1.1.x | Documentación técnica |
+| **Vercel** | — | Despliegue y hosting |
+
+---
+
+## 📁 Arquitectura del Proyecto
+
+```
+src/app/
+├── core/
+│   ├── models/
+│   │   ├── auth.model.ts          # User, UserRole, AuthState
+│   │   ├── ticket.model.ts        # Ticket, CreateTicketPayload, TableColumn
+│   │   └── metric.model.ts        # ServerMetric, SummaryMetrics, LiveMetrics
+│   ├── services/
+│   │   ├── auth.service.ts        # BehaviorSubject<AuthState>, login, logout
+│   │   ├── sql-mock.service.ts    # API REST simulada (300ms delay)
+│   │   ├── nosql-mock.service.ts  # Métricas en tiempo real (BehaviorSubject + interval)
+│   │   ├── export.service.ts      # CSV (Blob nativo) + PDF (jspdf-autotable)
+│   │   └── notification.service.ts # Toasts accesibles (Ionic)
+│   └── guards/
+│       ├── auth.guard.ts           # Rutas autenticadas (functional guard)
+│       └── role.guard.ts           # Solo ADMIN (functional guard)
+├── shared/
+│   └── components/
+│       ├── data-table/             # Tabla reutilizable (OnPush, filtro, paginación)
+│       └── metric-card/            # Widget KPI (OnPush, tendencias, ARIA)
+├── pages/
+│   ├── login/                      # Formulario reactivo + quick demo buttons
+│   ├── register/                   # Validador asíncrono uniqueEmailValidator
+│   ├── dashboard/                  # forkJoin + Chart.js + exportar PDF/CSV
+│   ├── tickets/                    # DataTable + modal crear ticket
+│   └── help/                       # Manual embebido + arquitectura
+├── app.component.ts                # Root component (ion-app + router-outlet)
+├── shell.component.ts              # Layout con ion-split-pane + ion-menu
+├── app.routes.ts                   # Lazy Loading + authGuard + roleGuard
+├── app.config.ts                   # Providers Angular/Ionic standalone
+└── theme/
+    └── variables.scss              # Design tokens WCAG AA/AAA verificados
 ```
 
 ---
 
-## 📚 Documentación Técnica y Troubleshooting
+## 🚀 Instalación y Ejecución Local
 
-Para consultar el análisis exhaustivo de arquitectura e incidencias resueltas, consulta el archivo:
-👉 **[`src/app/docs/technical-notes.md`](src/app/docs/technical-notes.md)**
+### Prerrequisitos
+- **Node.js** ≥ 18.x
+- **npm** ≥ 9.x
+- **Angular CLI** ≥ 17.x (opcional)
 
-### Resumen de Incidencias Documentadas:
-1. **¿Por qué existe `app.config.ts`?**: Reemplazo oficial de `AppModule` en Angular Standalone mediante `ApplicationConfig`, centralizando funciones proveedoras tree-shakeable (`provideHttpClient()`, `provideRouter()`, `provideIonicAngular()`).
-2. **Subpath de importación en `@ionic/angular/standalone`**: Resuelto mediante script automatizado `scripts/setup-ionic-exports.js` en `postinstall` y mapeo en `tsconfig.json`.
-3. **Error `NG0908 Zone.js Required`**: Resuelto con la integración de `zone.js` en `polyfills` de `angular.json` e importación en `main.ts` para soportar `IonRouterOutlet`.
-4. **Saturación de cuota HTTP 429 en Google Books API**: Resuelto mediante operador RxJS `catchError` con catálogo curado tipado y forzado de detección de cambios con `ChangeDetectorRef`.
-5. **Flujo de Integración Profesional Git (de `desarrollo` a `main`)**: Justificación de `main` como rama de producción en Vercel vs `desarrollo` para staging/preview, con guía paso a paso de comandos de terminal para merge y push.
+### Pasos
 
----
-
-## 💻 Instrucciones de Ejecución
-
-### 1. Iniciar servidor de desarrollo local
 ```bash
+# 1. Clonar el repositorio
+git clone <url-repositorio>
+cd ionicAngular
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Servidor de desarrollo
 npm start
-```
-La aplicación estará disponible en `http://localhost:4200/`.
+# → Abre automáticamente en http://localhost:4200
 
-### 2. Compilar bundle de producción
-```bash
-npm run build
+# 4. Build de producción
+npm run build:prod
+# → Genera carpeta dist/ionic-angular/browser/
 ```
-Genera los archivos optimizados en la carpeta `www/`.
 
-### 3. Despliegue en Vercel
-Simplemente vincula el repositorio en Vercel o ejecuta:
+---
+
+## 📖 Documentación con Compodoc
+
+Compodoc genera documentación técnica automática del código TypeScript.
+
 ```bash
-npx vercel
+# Generar y servir documentación (modo servidor)
+npm run compodoc
+# → Abre en http://localhost:8080
+
+# Solo generar (sin servidor)
+npm run compodoc:build
+# → Genera en docs/compodoc/
 ```
-Vercel detectará el archivo `vercel.json` y desplegará la SPA redirigiendo todas las rutas a `index.html`.
+
+**¿Qué documenta Compodoc?**
+- ✅ Todos los componentes con sus `@Input` y `@Output`
+- ✅ Todos los servicios con sus métodos públicos
+- ✅ Interfaces y modelos TypeScript
+- ✅ Guards y pipes
+- ✅ Cobertura de documentación JSDoc
+
+---
+
+## ☁️ Despliegue en Vercel
+
+### Opción 1: Vercel CLI (Recomendado)
+
+```bash
+# 1. Instalar Vercel CLI globalmente
+npm install -g vercel
+
+# 2. Autenticar con Vercel
+vercel login
+
+# 3. Build de producción
+npm run build:prod
+
+# 4. Desplegar (primera vez - configura proyecto)
+vercel --prod
+
+# 5. Despliegues posteriores
+vercel --prod
+```
+
+### Opción 2: Conectar con GitHub
+
+1. Push al repositorio GitHub
+2. Ir a [vercel.com](https://vercel.com) → New Project
+3. Importar el repositorio
+4. Configurar:
+   - **Build Command**: `npm run build:prod`
+   - **Output Directory**: `dist/ionic-angular/browser`
+5. Deploy
+
+> El archivo `vercel.json` ya está configurado para evitar errores 404 al recargar en rutas SPA.
+
+---
+
+## 🌿 Git Flow Recomendado
+
+```
+main                    # Rama de producción (Vercel auto-deploy)
+└── develop             # Integración de features
+    ├── feature/auth            # Autenticación y guards
+    ├── feature/dashboard       # Dashboard y gráficos
+    ├── feature/tickets         # Gestión de tickets
+    ├── feature/data-table      # Componente reutilizable
+    ├── feature/accessibility   # Mejoras WCAG
+    └── hotfix/                 # Correcciones urgentes sobre main
+```
+
+### Convención de commits
+```
+feat(dashboard): add forkJoin parallel data loading
+fix(auth): restore session from localStorage on reload
+style(theme): update WCAG AA contrast ratios
+docs(readme): add deployment guide
+test(data-table): add unit tests for filter logic
+```
+
+---
+
+## ♿ Accesibilidad (WCAG 2.1 AA/AAA)
+
+| Criterio | Implementación |
+|----------|---------------|
+| **1.4.3 Contraste** | Ratio mínimo 4.5:1 en texto. Verificado con WebAIM. |
+| **1.4.4 Redimensionar texto** | Diseño responsive sin scroll horizontal hasta 320px. |
+| **2.1.1 Teclado** | Navegación Tab/Enter/Space en todos los interactivos. |
+| **2.4.3 Orden foco** | Orden lógico de tabulación en todos los formularios. |
+| **2.4.7 Foco visible** | :focus-visible con outline 3px en todos los elementos. |
+| **3.1.1 Idioma** | `lang="es"` en `<html>`. |
+| **3.3.1 Error identificado** | `role="alert"` + `aria-live="assertive"` en errores. |
+| **4.1.2 Nombre/Función** | `aria-label`, `aria-describedby`, `aria-current` en todos los elementos interactivos. |
+| **Tablas** | `role="grid"`, `role="columnheader"`, `<caption>` en DataTable. |
+| **Movimiento** | `prefers-reduced-motion` respetado. |
+
+---
+
+## 🔄 Patrones RxJS Implementados
+
+| Patrón | Servicio/Componente | Descripción |
+|--------|--------------------|----|
+| `BehaviorSubject` | `AuthService` | Estado global de autenticación |
+| `forkJoin` | `DashboardPage` | Carga paralela SQL + NoSQL |
+| `debounceTime(300)` | `DataTableComponent` | Búsqueda reactiva sin bloqueo |
+| `debounceTime(300)` | `RegisterPage` | Validador asíncrono email |
+| `switchMap` | `RegisterPage` | Cancelación de peticiones email |
+| `distinctUntilChanged` | `DataTableComponent` | Evita búsquedas duplicadas |
+| `takeUntil` | Todas las páginas | Gestión de suscripciones |
+| `interval` | `NoSqlMockService` | Actualización periódica 5s |
+| `shareReplay(1)` | `NoSqlMockService` | Caché del último valor |
+
+---
+
+## 📊 Estructura de Datos Mock
+
+### Usuarios del Sistema
+- `admin@enterprise.io` → Rol ADMIN
+- `user@enterprise.io` → Rol USER
+
+### Tickets (10 preconfigurados)
+- Estados: OPEN, IN_PROGRESS, RESOLVED, CLOSED
+- Prioridades: LOW, MEDIUM, HIGH, CRITICAL
+- Categorías: HARDWARE, SOFTWARE, NETWORK, SECURITY, OTHER
+
+### Servidores Monitorizados (12)
+- WEB-SRV-01/02, DB-PRIMARY/REPLICA, APP-SRV-01/02
+- CACHE-01, BACKUP-SRV, PROXY-01, MONITOR-SRV, MAIL-SRV, VPN-GW
+
+---
+
+## 📄 Licencia
+
+Proyecto académico para evaluación del módulo **Desarrollo de Interfaces (0488)**  
+**Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)**  
+Universidad Nebrija — Curso 2025-2026
+
+---
+
+*Desarrollado con ❤️ y TypeScript estricto por Luis López*
