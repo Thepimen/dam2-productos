@@ -1,82 +1,19 @@
+/**
+ * @file app.component.ts
+ * @description Componente raíz de la aplicación. Renderiza ion-app y el router outlet.
+ * El layout de navegación se gestiona en ShellComponent para las rutas protegidas.
+ */
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import {
-  bookOutline,
-  star,
-  starOutline,
-  starHalf,
-  alertCircleOutline,
-  refreshOutline,
-  openOutline,
-  searchOutline,
-  arrowForwardOutline,
-  arrowBackOutline,
-  informationCircleOutline,
-  libraryOutline,
-  codeSlashOutline,
-  calendarOutline,
-  businessOutline,
-  pricetagOutline,
-  globeOutline,
-  hardwareChipOutline,
-  checkmarkCircleOutline,
-  layersOutline,
-  homeOutline,
-  logoGithub,
-  cashOutline,
-  resizeOutline,
-  sunnyOutline,
-  moonOutline,
-  gridOutline,
-  listOutline,
-  cubeOutline,
-  trendingUpOutline,
-  walletOutline,
-  pricetagsOutline,
-} from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
   standalone: true,
   imports: [IonApp, IonRouterOutlet],
+  template: `
+    <ion-app>
+      <ion-router-outlet></ion-router-outlet>
+    </ion-app>
+  `,
 })
-export class AppComponent {
-  constructor() {
-    addIcons({
-      bookOutline,
-      star,
-      starOutline,
-      starHalf,
-      alertCircleOutline,
-      refreshOutline,
-      openOutline,
-      searchOutline,
-      arrowForwardOutline,
-      arrowBackOutline,
-      informationCircleOutline,
-      libraryOutline,
-      codeSlashOutline,
-      calendarOutline,
-      businessOutline,
-      pricetagOutline,
-      globeOutline,
-      hardwareChipOutline,
-      checkmarkCircleOutline,
-      layersOutline,
-      homeOutline,
-      logoGithub,
-      cashOutline,
-      resizeOutline,
-      sunnyOutline,
-      moonOutline,
-      gridOutline,
-      listOutline,
-      cubeOutline,
-      trendingUpOutline,
-      walletOutline,
-      pricetagsOutline,
-    });
-  }
-}
+export class AppComponent {}
